@@ -1,10 +1,10 @@
-# SysFlow 🖥️⚡
+# SysFlow 🐧⚡
 
-### Free. Open. Your system, measured honestly.
+### A free, open-source Linux system monitor and task manager.
 
-SysFlow is a free, open system monitor and task manager designed to give you a clear view of what your computer is doing.
+SysFlow is a Linux desktop application for monitoring your computer, inspecting running processes, managing system services, viewing hardware information, checking storage, and measuring system performance.
 
-It monitors CPU, memory, processes, disks, users, services, startup applications, power, hardware information, installed applications, and more, while avoiding made-up telemetry when information isn't available.
+SysFlow is designed specifically for Linux so it can take advantage of Linux-native system interfaces and provide accurate telemetry without maintaining separate Windows and macOS implementations.
 
 > **A measuring instrument should never make up an answer.**
 
@@ -20,119 +20,158 @@ SysFlow v0.1 includes:
 | 2  | 📈 **Performance**    | Per-core CPU usage, memory, and performance telemetry               |
 | 3  | ⚙️ **Processes**      | Running processes, CPU usage, memory, threads, and process controls |
 | 4  | 🖥️ **System Info**   | CPU, GPU, motherboard, BIOS, OS, kernel, and hardware information   |
-| 5  | 🚀 **Startup Apps**   | Applications configured to launch automatically                     |
+| 5  | 🚀 **Startup Apps**   | Applications configured to start automatically                      |
 | 6  | 👤 **Users**          | Currently logged-in users and sessions                              |
-| 7  | 🔧 **Services**       | Installed and running system services                               |
-| 8  | ⚡ **Power & Freq**    | CPU frequency, power information, battery, and performance settings |
+| 7  | 🔧 **Services**       | Linux system services and their current state                       |
+| 8  | ⚡ **Power & Freq**    | CPU frequency, governors, battery, and power information            |
 | 9  | 🧪 **Benchmarks**     | CPU performance testing                                             |
-| 10 | 📦 **Installed Apps** | Applications installed on the system                                |
+| 10 | 📦 **Installed Apps** | Applications installed through the Linux package system             |
 | 11 | 💾 **Disk Space**     | Storage devices, partitions, capacity, and usage                    |
-
-### Free means free
-
-SysFlow does **not** lock monitoring features behind a Pro tier.
-
-There are no:
-
-* 💳 Subscriptions
-* 🔒 Pro-only pages
-* ⏳ Feature trials
-* 💰 Paid telemetry
-* 🚫 Artificial feature restrictions
-
-The goal is simple: **system monitoring should be a utility, not a subscription.**
 
 ---
 
-## 🖥️ Supported Platforms
+# 🐧 Linux First
 
-SysFlow is being developed with platform-specific measurement backends while keeping the interface shared.
+SysFlow is intentionally **Linux-only**.
 
-### 🐧 Linux
+Instead of building a generic abstraction layer for multiple operating systems, SysFlow can focus on the Linux kernel and Linux's native interfaces.
 
-**Supported**
+This allows the project to make better use of:
+
+* `/proc`
+* `/sys`
+* `systemd`
+* `hwmon`
+* `powercap`
+* `lspci`
+* Linux filesystem APIs
+* CPU frequency governors
+* RAPL energy counters
+* Linux user sessions
+* Linux package databases
+
+The result is a smaller, more focused application with fewer compatibility layers.
+
+---
+
+# 🎯 Project Philosophy
+
+SysFlow follows a simple rule:
+
+> **Never invent telemetry.**
+
+If the operating system provides reliable information, SysFlow displays it.
+
+If the information cannot be obtained reliably, SysFlow reports it as unavailable.
+
+For example:
+
+```text
+CPU Temperature: 51°C
+```
+
+is useful when a real sensor provides that measurement.
+
+If no trustworthy temperature sensor is available:
+
+```text
+CPU Temperature: Unavailable
+```
+
+is better than guessing.
+
+### Zero is not unavailable
+
+These are different states:
+
+```text
+CPU Usage: 0%
+```
+
+means the CPU is currently reporting zero utilization.
+
+```text
+CPU Temperature: Unavailable
+```
+
+means SysFlow could not obtain a trustworthy measurement.
+
+SysFlow keeps those states separate.
+
+---
+
+# 🖥️ Supported Systems
+
+SysFlow targets modern 64-bit Linux systems.
+
+### Primary targets
 
 * Linux x86_64
-* PySide6
-* `psutil`
-* Native Linux system interfaces
-* systemd integration
-* Linux hardware telemetry where available
+* Linux ARM64
 
-A Debian package is available for Linux builds.
+### Tested / intended distributions
 
-### 🪟 Windows
+* Linux Mint
+* Ubuntu
+* Debian
+* Fedora
+* Arch-based distributions
 
-**Supported**
-
-* Windows 10/11
-* Windows x64
-* Windows-specific system backends
-* Windows Services
-* Windows startup applications
-* Windows installed applications
-* Windows hardware information
-* NVIDIA GPU telemetry when available
-
-Windows builds are produced automatically using GitHub Actions.
-
-### 🍎 macOS
-
-macOS support is part of the planned cross-platform architecture.
+Distribution-specific behavior may vary depending on available system interfaces, permissions, hardware sensors, and installed utilities.
 
 ---
 
 # 📥 Installation
 
-## 🐧 Linux
+## Debian / Ubuntu / Linux Mint
 
-Download the latest `.deb` package from the project's releases.
+Download the latest `.deb` release.
 
-Then install it with:
+Install it with:
 
 ```bash
 sudo apt install ./sysflow_0.1.0_amd64.deb
 ```
 
-Launch SysFlow from your Applications menu.
+Then launch **SysFlow** from your applications menu.
+
+You can also launch it from a terminal:
+
+```bash
+sysflow
+```
 
 ---
 
-## 🪟 Windows
-
-Download the Windows build and extract the archive.
-
-The folder contains:
-
-```text
-SysFlow/
-├── SysFlow.exe
-└── _internal/
-```
-
-Run:
-
-```text
-SysFlow.exe
-```
-
-**Keep the `_internal` folder next to `SysFlow.exe`.**
-
-The Windows build is packaged with PyInstaller, so Python does not need to be installed separately.
-
-> Windows or browser security software may display reputation warnings for newly built unsigned applications. Always obtain SysFlow from the official project releases and verify the release before running it.
-
----
-
-# 🛠️ Building From Source
+# 🛠️ Running From Source
 
 ## Requirements
 
 * Python 3.12+
 * PySide6
 * psutil
+* Linux
 
-Install the dependencies:
+Clone the repository:
+
+```bash
+git clone https://github.com/ppppp44/SysFlow.git
+cd SysFlow
+```
+
+Create a virtual environment:
+
+```bash
+python3 -m venv .venv
+```
+
+Activate it:
+
+```bash
+source .venv/bin/activate
+```
+
+Install dependencies:
 
 ```bash
 pip install -r requirements.txt
@@ -146,59 +185,59 @@ python app.py
 
 ---
 
-## 🪟 Building Windows
+# 📦 Building the Debian Package
 
-Windows builds are generated automatically through GitHub Actions.
+SysFlow includes Debian packaging files.
 
-The workflow:
+From the project root:
 
-```text
-Git push
-   │
-   ▼
-GitHub Actions
-   │
-   ▼
-Windows runner
-   │
-   ├── Python
-   ├── PySide6
-   ├── psutil
-   └── PyInstaller
-   │
-   ▼
-SysFlow.exe
+```bash
+dpkg-deb --build debian/sysflow
 ```
 
-To manually trigger a build, open the **Actions** tab in the GitHub repository and run the Windows build workflow.
+This produces:
+
+```text
+debian/sysflow.deb
+```
+
+Install the package:
+
+```bash
+sudo apt install ./debian/sysflow.deb
+```
 
 ---
 
 # 🏗️ Architecture
 
-SysFlow separates the user interface from the system measurement layer.
+SysFlow uses a Python + PySide6 interface with Linux-focused telemetry backends.
 
 ```text
                          SysFlow
                             │
-                 ┌──────────┴──────────┐
-                 │                     │
-              UI Layer            Core Metrics
-                 │                     │
-        ┌────────┴────────┐     ┌──────┴──────┐
-        │                 │     │             │
-      Pages          Shared UI  psutil    Platform APIs
-        │                           │             │
-        └──────────────┬────────────┘             │
-                       │                          │
-                 Platform Backend ◄────────────────┘
-                       │
-          ┌────────────┼────────────┐
-          │            │            │
-        Linux       Windows       macOS
+             ┌──────────────┴──────────────┐
+             │                             │
+          PySide6                     Core Metrics
+             │                             │
+      ┌──────┴──────┐              ┌───────┴───────┐
+      │             │              │               │
+    Pages          UI           psutil         Linux APIs
+      │                              │               │
+      └──────────────┬───────────────┴───────────────┘
+                     │
+               Linux telemetry
+                     │
+        ┌────────────┼────────────┐
+        │            │            │
+      /proc         /sys       systemd
+        │            │            │
+        └────────────┼────────────┘
+                     │
+                  SysFlow
 ```
 
-The interface stays consistent while platform-specific code handles the parts that differ between operating systems.
+The interface is separated into pages while system measurements are handled by dedicated core modules.
 
 ---
 
@@ -234,96 +273,248 @@ SysFlow/
 │
 └── .github/
     └── workflows/
-        └── windows-build.yml
 ```
 
 ---
 
-# 📊 Telemetry Philosophy
+# 📊 Monitoring
 
-SysFlow is built around one important rule:
+SysFlow can monitor a variety of system resources.
 
-> **Never pretend unavailable data exists.**
+### CPU
 
-If a sensor or operating system does not provide reliable information, SysFlow should report it as unavailable instead of displaying a fabricated value.
+* Overall CPU utilization
+* Per-logical-processor utilization
+* CPU frequency
+* CPU temperature when available
+* CPU information
+* CPU benchmarks
 
-For example:
+### Memory
 
-```text
-CPU Temperature: 52°C
-```
+* Used memory
+* Total memory
+* Memory percentage
+* Memory history
 
-is useful when a real sensor provides that measurement.
+### GPU
 
-But if the operating system provides no trustworthy temperature source:
+* GPU identification
+* GPU utilization when supported
+* GPU temperature when supported
+* GPU memory information when supported
+* GPU clock information when supported
 
-```text
-CPU Temperature: Unavailable
-```
+### Storage
 
-is better than guessing.
+* Filesystem capacity
+* Used space
+* Available space
+* Disk information
 
-This principle applies throughout SysFlow.
+### Processes
 
-### Zero is not unavailable
+* Process ID
+* Process name
+* User
+* CPU usage
+* Memory usage
+* Threads
+* Status
+* Command
+* Executable
+* Parent process
 
-A measurement of:
+Process controls include:
 
-```text
-0%
-```
+* End
+* Kill
+* Suspend
+* Resume
 
-means something.
+---
 
-A measurement that could not be obtained means:
+# ⚡ Power & Frequency
 
-```text
-Unavailable
-```
+SysFlow uses Linux-specific interfaces for power and frequency information where available.
 
-Those are deliberately different states.
+Depending on the hardware and kernel configuration, this can include:
+
+* CPU frequency
+* CPU frequency governors
+* CPU policies
+* Battery information
+* Energy counters
+* RAPL information
+* Power-related telemetry
+
+Hardware support varies between processors and Linux kernels.
+
+When a measurement is unavailable, SysFlow reports it as unavailable rather than estimating it.
+
+---
+
+# 🔧 Services
+
+SysFlow can inspect Linux `systemd` services.
+
+Service information can include:
+
+* Service name
+* Description
+* State
+* Enabled/disabled state
+* Service status
+
+Where permissions allow it, SysFlow can also interact with services.
+
+Some service operations require administrator privileges.
+
+---
+
+# 🚀 Startup Applications
+
+SysFlow can inspect applications configured to start automatically when a Linux desktop session begins.
+
+Linux startup information may come from:
+
+* `/etc/xdg/autostart`
+* User autostart directories
+* `.desktop` files
+
+SysFlow displays the available startup information rather than assuming that every startup mechanism is identical across Linux environments.
+
+---
+
+# 📦 Installed Applications
+
+SysFlow can inspect installed Linux applications through the system package database.
+
+On Debian-based systems this includes package information from:
+
+* `dpkg`
+* APT package metadata
+
+The goal is to show what is actually installed on the system rather than maintaining a separate application database.
+
+---
+
+# 👤 Users
+
+SysFlow can display active user sessions using Linux system information.
+
+Information may include:
+
+* Username
+* Terminal
+* Login time
+* Remote/local session information
+* Current session state
+
+---
+
+# 🖥️ System Information
+
+SysFlow provides information about the Linux system and its hardware.
+
+Depending on the system, this can include:
+
+* Distribution
+* Kernel version
+* Architecture
+* CPU
+* GPU
+* Motherboard
+* BIOS
+* System uptime
+* Hardware information
+
+Linux-native interfaces and available system utilities are used to gather this information.
+
+---
+
+# 🧪 Benchmarks
+
+SysFlow includes CPU benchmarking tools for basic performance testing.
+
+Benchmarks are intended to provide useful relative measurements rather than replace dedicated benchmarking applications.
+
+Results can vary depending on:
+
+* CPU temperature
+* Background processes
+* CPU frequency scaling
+* Power settings
+* Thermal throttling
+* System load
 
 ---
 
 # 🔐 Privacy
 
-SysFlow is designed to monitor the computer it is running on.
+SysFlow is designed for local system monitoring.
 
-Normal system telemetry is collected locally using operating-system APIs and local libraries.
+Normal monitoring does not require a remote telemetry server.
 
-SysFlow does not need a remote server to display:
+System information is collected locally from the Linux machine and displayed locally in the application.
 
-* CPU usage
-* Memory usage
-* Processes
-* Disk usage
-* System information
-* Logged-in users
-* Services
-* Local hardware telemetry
-
-The application is intended to keep system monitoring local to the machine.
+SysFlow does not need an online account to monitor your computer.
 
 ---
 
-# 🧰 Built With
+# ⚙️ Performance
+
+SysFlow is designed to minimize unnecessary system overhead.
+
+A system monitor should not become the thing consuming all the resources it is supposed to measure.
+
+The project therefore aims to:
+
+* Avoid unnecessary polling
+* Keep telemetry collection separate from UI rendering
+* Avoid blocking the interface
+* Update graphs efficiently
+* Avoid collecting information that is not needed
+* Keep unavailable measurements unavailable instead of repeatedly retrying expensive operations
+
+Performance improvements remain an ongoing part of development.
+
+---
+
+# 📸 Screenshots
+
+Screenshots will be added as the interface develops.
+
+Planned screenshots:
+
+```text
+screenshots/
+├── summary.png
+├── performance.png
+├── processes.png
+├── system-info.png
+├── services.png
+└── disk-space.png
+```
+
+---
+
+# 🛠️ Built With
 
 * 🐍 **Python**
 * 🎨 **PySide6**
 * 📊 **psutil**
-* 📦 **PyInstaller**
-* 🐧 **Debian packaging**
-* ☁️ **GitHub Actions**
-
-Platform-specific system APIs are used where cross-platform libraries cannot provide reliable information.
+* 🐧 Linux system interfaces
+* 📦 Debian packaging
+* ☁️ GitHub Actions
 
 ---
 
-# 🧪 Development Status
+# 🚧 Project Status
 
-## v0.1.0
+## SysFlow v0.1.0
 
-Current development milestone:
+Current pages:
 
 * 🟢 Summary
 * 🟢 Performance
@@ -336,9 +527,12 @@ Current development milestone:
 * 🟢 Benchmarks
 * 🟢 Installed Apps
 * 🟢 Disk Space
-* 🟢 Linux build
-* 🟢 Windows build pipeline
-* 🟢 GitHub repository
+
+Current platform:
+
+* 🟢 Linux
+
+Windows and macOS builds are **not supported targets**.
 
 SysFlow is actively being developed.
 
@@ -346,57 +540,50 @@ SysFlow is actively being developed.
 
 # 🗺️ Roadmap
 
-Future development may include:
+Possible future improvements include:
 
-* 🍎 Expanded macOS backend
-* 🎮 More GPU telemetry
-* 🌡️ Additional hardware sensors
-* 📡 Network monitoring
+* 📈 More historical performance graphs
+* 🎮 Improved GPU telemetry
+* 🌡️ More hardware sensors
 * 🔋 Deeper power telemetry
-* 📊 More benchmark types
+* 💾 More detailed disk statistics
+* 🌐 Network monitoring
+* 🧪 Additional benchmarks
 * 🎨 Additional themes
-* 📈 More historical graphs
-* 📦 Additional package formats
-* 🪟 Windows hardware telemetry improvements
-
-Features will be added without turning core monitoring functionality into a paid tier.
+* ⚡ Lower telemetry overhead
+* 📦 More Linux package formats
+* 🏎️ Faster native implementation if performance requirements grow
 
 ---
-
-
 
 # 🤝 Contributing
 
-Contributions, bug reports, ideas, and testing feedback are welcome.
+Bug reports, ideas, testing, and contributions are welcome.
 
-If you find a problem:
-
-1. Check the existing issues.
-2. Create a new issue if the problem has not already been reported.
-3. Include your operating system and SysFlow version.
-4. Include relevant error messages or logs.
-5. Explain how the issue can be reproduced.
-
-For hardware-specific telemetry problems, include the relevant CPU/GPU and operating system information when possible.
-
----
-
-# 🐛 Reporting Bugs
-
-When reporting a bug, useful information includes:
+When reporting a bug, include:
 
 ```text
 SysFlow version:
-Operating system:
+Linux distribution:
+Kernel:
 CPU:
 GPU:
-Python version:
 What happened:
 What you expected:
 Steps to reproduce:
 ```
 
-Please avoid posting passwords, private keys, personal files, or other sensitive information.
+For hardware telemetry problems, include your CPU/GPU and relevant hardware information when possible.
+
+Please do not include passwords, private keys, personal files, or other sensitive information.
+
+---
+
+# 🐛 Issues
+
+If you encounter a problem, open an issue in the GitHub repository.
+
+Useful bug reports should include enough information to reproduce the problem.
 
 ---
 
@@ -410,19 +597,23 @@ See the repository license for the applicable license terms.
 
 # 🚀 SysFlow
 
-**Free system monitoring without the subscription nonsense.**
+**Free Linux system monitoring without the subscription nonsense.**
 
-Made to measure your computer honestly.
+Built for Linux.
+Designed to measure honestly.
+Made to stay out of your way.
 
 ```text
 ┌──────────────────────────────────────────────┐
-│                  SYSFLOW                     │
+│                    SYSFLOW                   │
 │                                              │
 │       Measure it. Understand it.             │
-│                 Control it.                  │
+│              Control it.                     │
 │                                              │
-│              🖥️  ⚡  📊  🔧                  │
+│             🐧  ⚡  📊  🔧                   │
 └──────────────────────────────────────────────┘
 ```
 
 **SysFlow v0.1.0**
+
+[GitHub](https://github.com/ppppp44/SysFlow)
