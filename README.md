@@ -483,19 +483,19 @@ Performance improvements remain an ongoing part of development.
 
 # 📸 Screenshots
 
-Screenshots will be added as the interface develops.
+<img width="3072" height="1633" alt="image" src="https://github.com/user-attachments/assets/7aef376f-e074-4756-8027-1cdd274c9f0a" />
 
-Planned screenshots:
+<img width="3072" height="1614" alt="image" src="https://github.com/user-attachments/assets/b82c0f0a-05f5-40f3-8853-8b9006484dc8" />
 
-```text
-screenshots/
-├── summary.png
-├── performance.png
-├── processes.png
-├── system-info.png
-├── services.png
-└── disk-space.png
-```
+<img width="3064" height="1645" alt="image" src="https://github.com/user-attachments/assets/1f31f608-d091-4876-9517-6613fecfbab2" />
+
+<img width="3072" height="1649" alt="image" src="https://github.com/user-attachments/assets/9dcd07ba-e77d-41f3-86b3-7d01e2c20757" />
+
+<img width="3072" height="1648" alt="image" src="https://github.com/user-attachments/assets/6c448914-3e3f-4d2d-af32-7577a306dd86" />
+
+<img width="3040" height="1639" alt="image" src="https://github.com/user-attachments/assets/689328b2-10aa-4bcd-b057-4223a20f82f4" />
+
+
 
 ---
 
