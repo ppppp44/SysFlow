@@ -1,0 +1,36 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Build artifacts
+build/
+dist/
+*.deb
+*.rpm
+*.AppImage
+*.exe
+
+# Packaging
+debian/sysflow.deb
+
+# IDE
+.idea/
+.vscode/
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# PyInstaller
+*.spec
+
+# Logs
+*.log
+# Generated Debian package staging directory
+debian/sysflow/opt/sysflow/

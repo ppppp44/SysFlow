@@ -1,0 +1,3 @@
+#!/bin/sh
+cd /opt/sysflow
+exec /opt/sysflow/.venv/bin/python /opt/sysflow/app.py

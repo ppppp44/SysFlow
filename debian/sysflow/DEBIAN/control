@@ -1,0 +1,9 @@
+Package: sysflow
+Version: 0.1.0
+Section: utils
+Priority: optional
+Architecture: amd64
+Maintainer: SysFlow
+Depends: python3
+Description: SysFlow system monitor and task manager
+ SysFlow is a free system monitoring and task management application.

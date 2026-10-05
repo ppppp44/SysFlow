@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=SysFlow
+Comment=Free system monitor and task manager
+Exec=sysflow
+Icon=sysflow
+Terminal=false
+Type=Application
+Categories=System;Monitor;
+StartupNotify=true
